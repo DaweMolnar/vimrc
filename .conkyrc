@@ -1,5 +1,5 @@
 
-verride_utf8_locale yes
+verride_utf8_locale = yes
 
 # Use Xft?
 use_xft yes
@@ -70,7 +70,7 @@ gap_y 60
 
 TEXT
 SYSTEM ${hr 2}
-${goto 6}${voffset 6}${goto 40}${pre_exec cat /etc/issue.net} $machine
+${goto 6}${voffset 6}${goto 40}${execi 60 cat /etc/issue.net} $machine
 ${goto 40}Kernel: ${kernel}
 ${hr 2}
 
@@ -80,7 +80,7 @@ ${goto 6}${goto 32}RAM: ${mem} ${alignr}${membar 8,60}
 ${goto 6}${goto 32}DISK: ${diskio}${alignr}${diskiograph 8,60 F57900 FCAF3E}
 ${goto 6}${goto 32}SWAP: $swapperc% ${alignr}${swapbar 8,60}
 
-#${goto 6}${voffset -4}${goto 32}CPU Temp: ${alignr}${exec sensors | grep ‘CPU Temperature’ | cut -c19-20}°C / ${color #FCAF3E}${exec sensors | grep ‘CPU Temperature’ | cut -c37-38}°C$color
+${goto 6}${voffset -4}${goto 32}CPU Temp: ${alignr}${exec sensors | grep 'Physical id 0' | cut -c18-19}°C / ${color #FCAF3E}${exec sensors | grep 'Core 0' | cut -c36-38}°C$color
 #${goto 5}${voffset -4}${goto 32}Mother Temp: ${alignr}${exec sensors | grep ‘MB Temperature’ | cut -c19-20}°C / ${color #FCAF3E}${exec sensors | grep ‘MB Temperature’ | cut -c37-38}°C$color
 #${goto 4.5}${voffset -6}${goto 32}HD Temp:${alignr}${exec hddtemp /dev/sda -n –unit=C}°C / ${color #FCAF3E}${exec sensors | grep ‘CPU Temperature’ | cut -c54-55}°C$color
 #${goto 6}${voffset -4}${goto 32}Fan Speed: ${alignr}${exec sensors | grep ‘RPM’| cut -c16-25}
@@ -105,17 +105,17 @@ ${goto 29} Home: ${fs_used_perc /home}%${alignr}${fs_size /home}
 ${goto 29} Free: ${fs_free /home}${alignr}${fs_bar 8,60 /home}
 
 ${voffset -1}NETWORK ${hr 2}
-${if_up wlan0}
-${goto 32}SSID: ${wireless_essid wlan0}
-${goto 32}Signal: ${wireless_link_qual wlan0}% ${alignr}${wireless_link_bar 8,60 wlan0}
-${goto 32}Up: ${upspeed wlan0}${font} ${alignr}${upspeedgraph wlan0 8,60 F57900 FCAF3E}
-${goto 32}Total: ${totalup wlan0}
-${goto 32}Down: ${downspeed wlan0}${font} ${alignr}${downspeedgraph wlan0 8,60 F57900 FCAF3E}
-${goto 32}Total: ${totaldown wlan0}
-${goto 32}Local IP: ${alignr}${addr wlan0}
-${goto 32}Public IP: ${alignr}${execi 3600 wget -O – http://www.whatismyip.com/automation/n09230945.asp | tail}
+${if_up wlp7s0}
+${goto 32}SSID: ${wireless_essid wlp7s0}
+${goto 32}Signal: ${wireless_link_qual wlp7s0}% ${alignr}${wireless_link_bar 8,60 wlp7s0}
+${goto 32}Up: ${upspeed wlp7s0}${font} ${alignr}${upspeedgraph wlp7s0 8,60 F57900 FCAF3E}
+${goto 32}Total: ${totalup wlp7s0}
+${goto 32}Down: ${downspeed wlp7s0}${font} ${alignr}${downspeedgraph wlp7s0 8,60 F57900 FCAF3E}
+${goto 32}Total: ${totaldown wlp7s0}
+${goto 32}Local IP: ${alignr}${addr wlp7s0}
+${goto 32}Public IP: ${alignr}${execi 3600 wget http://ipinfo.io/ip -qO - | tail}
 # |–ETH0
-${else}${if_up eth0}
+${else}${if_up enp8s0}
 ${goto 32}Up: ${upspeed eth0}${font} ${alignr}${upspeedgraph eth0 8,60 F57900 FCAF3E}
 ${goto 32}Total: ${totalup eth0}
 ${goto 32}Down: ${downspeed eth0}${font} ${alignr}${downspeedgraph eth0 8,60 F57900 FCAF3E}
